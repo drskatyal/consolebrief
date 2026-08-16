@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ConsoleBrief — Search Console CSV to a 2-page client PDF</title>
+  <meta name="description" content="Drop a Google Search Console Performance CSV. Get a 2-page client PDF. The file never leaves the browser.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap brand-row">
+      <div class="wordmark">CONSOLEBRIEF</div>
+      <nav class="nav">
+        <a href="#what">What’s in the PDF</a>
+        <a href="#who">Who it’s for</a>
+        <a href="#tool">The tool</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <p class="disclosure">
+        <strong>Built by an autonomous AI agent (Earning Bot) for Sanyam Katyal.</strong>
+        Not an SEO consultant. Not a ranking promise. The agent formats the file you provide; it does not log into Google or forecast positions.
+      </p>
+      <h1>Drop a Search Console CSV. Get a 2-page client PDF.</h1>
+      <p class="lede">
+        ConsoleBrief reads a Google Search Console Performance export in your browser and typesets a short client brief.
+        The CSV is not uploaded. There is no Google login, no GA4, and no rank tracker.
+      </p>
+      <div class="actions">
+        <a class="btn" href="#tool">Open the tool</a>
+        <button class="btn-ghost" type="button" id="loadSampleHero">Load sample data</button>
+      </div>
+      <p class="fine">Works with no Search Console account — use the fictional Harbour Books samples.</p>
+    </section>
+
+    <section class="wrap grid-3" id="what">
+      <article class="card">
+        <h2>Never uploaded</h2>
+        <p>Parsing and PDF generation run locally. Close the tab and the file is gone. This page does not include analytics inside the tool canvas.</p>
+      </article>
+      <article class="card">
+        <h2>What’s in the PDF</h2>
+        <p>Cover (client, property, date range, your logo and colour) and file totals. Top 10 queries. Top 10 pages. Movers and losers if you add a second period. A near-win <em>filter</em> — not advice.</p>
+      </article>
+      <article class="card">
+        <h2>Honest limits</h2>
+        <p>The GSC UI export is capped at 1,000 rows. We report on the file we were given. Empty blocks are omitted. Rows are never invented.</p>
+      </article>
+    </section>
+
+    <section class="wrap grid-2" id="who">
+      <article class="card">
+        <h3>Who it’s for</h3>
+        <p>Freelance SEO practitioners and small-agency account managers who need a tidy two-pager after a reporting period — not another dashboard.</p>
+      </article>
+      <article class="card">
+        <h3>How to export</h3>
+        <ol>
+          <li>Search Console → Performance → Search results</li>
+          <li>Set the date range, then Export → Download CSV</li>
+          <li>If you get a ZIP, open it and drop <code>Queries.csv</code> and/or <code>Pages.csv</code></li>
+        </ol>
+        <p>Official columns: <code>Top queries</code> or <code>Top pages</code>, <code>Clicks</code>, <code>Impressions</code>, <code>CTR</code>, <code>Position</code>. <code>Query</code> / <code>Page</code> aliases are accepted. CTR may be <code>12.3%</code> or <code>0.123</code>.</p>
+      </article>
+    </section>
+
+    <section class="wrap" id="price">
+      <h2 class="price">Price later: £19 one-time</h2>
+      <button class="btn-polar" id="polarButton" type="button" disabled aria-disabled="true">Buy with Polar — £19</button>
+      <p class="fine" id="polarNote" tabindex="-1">Checkout is not live yet. This Polar button is a placeholder, not a paywall.</p>
+    </section>
+
+    <section class="wrap tool" id="tool">
+      <div class="tool-chrome">
+        <div>
+          <h2>Make a brief</h2>
+          <p class="fine">Cover fields are printed on page 1. They are not sent anywhere.</p>
+        </div>
+        <p class="agent-tag">Tool chrome: built by Earning Bot for Sanyam Katyal. Local-first. No Google OAuth.</p>
+      </div>
+
+      <div class="fields">
+        <label>Client name <input id="clientName" type="text" autocomplete="off" placeholder="Harbour Books"></label>
+        <label>Property <input id="property" type="text" autocomplete="off" placeholder="sc-domain:example.com"></label>
+        <label>Period from <input id="dateFrom" type="date"></label>
+        <label>Period to <input id="dateTo" type="date"></label>
+        <label>Previous from <input id="prevFrom" type="date"></label>
+        <label>Previous to <input id="prevTo" type="date"></label>
+        <label>Agency name <input id="agencyName" type="text" autocomplete="organization" placeholder="Your studio"></label>
+        <label>Agency colour <input id="agencyColour" type="color" value="#1f4d3a"></label>
+      </div>
+      <label>Agency logo (stays in the browser)
+        <input id="logo" type="file" accept="image/png,image/jpeg">
+        <span class="fine" id="logoName">No logo</span>
+      </label>
+
+      <div class="drops">
+        <label class="drop" id="dropCurrent">
+          <strong>This period</strong>
+          <span>Drop Queries and/or Pages CSVs. Required for a PDF.</span>
+          <input type="file" accept=".csv,text/csv" multiple>
+        </label>
+        <label class="drop" id="dropPrevious">
+          <strong>Previous period (optional)</strong>
+          <span>Drop last month’s CSVs for movers and losers. Skip this if you only have one export.</span>
+          <input type="file" accept=".csv,text/csv" multiple>
+        </label>
+      </div>
+
+      <div class="tool-actions">
+        <button class="btn-secondary" type="button" id="loadSample">Load sample data</button>
+        <button class="btn" type="button" id="downloadPdf" disabled>Download 2-page PDF</button>
+        <button class="btn-ghost" type="button" id="resetTool">Clear</button>
+      </div>
+      <p class="status" id="toolStatus" role="status"></p>
+
+      <div class="empty" id="emptyState">
+        <h3>No file yet</h3>
+        <p>Export a Performance CSV from Search Console, or load the sample bookshop data. ConsoleBrief will not invent queries, pages, or “page 1” outcomes. If a table has no rows, that block is left out of the PDF.</p>
+      </div>
+
+      <div class="preview" id="preview" hidden>
+        <p id="totalsPreview"></p>
+        <p class="fine">Sections that will print (empty ones are already dropped):</p>
+        <ul id="sectionList"></ul>
+        <ul id="fileList"></ul>
+      </div>
+      <p class="warn">GSC’s on-screen export stops at 1,000 rows. Totals here are the sum of the file, not the chart totals in Search Console.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="wordmark">CONSOLEBRIEF</div>
+      <p>A local-first static site. Hosted on GitHub Pages from this repository.</p>
+      <small>Built by Earning Bot for Sanyam Katyal. No medical or radiology content. No ranking guarantees.</small>
+    </div>
+  </footer>
+
+  <script src="./vendor/jspdf.umd.min.js"></script>
+  <script type="module" src="./js/app.js"></script>
+  <script type="module">
+    document.getElementById("loadSampleHero").addEventListener("click", () => {
+      document.getElementById("tool").scrollIntoView({ behavior: "smooth" });
+      document.getElementById("loadSample").click();
+    });
+  </script>
+</body>
+</html>
